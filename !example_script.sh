@@ -1,0 +1,4 @@
+#bash
+
+tail /dev/zero
+
