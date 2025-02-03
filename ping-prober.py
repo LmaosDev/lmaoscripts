@@ -1,11 +1,11 @@
-import subprocess, os, re; from sys import path
+import subprocess, re; from os import name as os_name; from sys import path; ppath = path;
 
-#! If I were to remake this or do it again, I'd do it purely with nested for loops. This is painful. 
+#? written in py 3.12.6, most likely wont work before 3.9.x/3.10.x
 
-print("This version only supports one wildcard or range at a time. IF YOU USE RANGES, YOU CANNOT USE SUBNET MASKS LOWER THAN /16. Edit to work with more iuw, and submit to https://github.com/LmaosDev/lmaoscripts/tree/pingprober\n") 
-print(f"OS = {os.name}\n") 
+print("IPV4 only. This version only supports one wildcard or range at a time. RANGES ONLY WORK ON THE LAST TWO NUMBERS. Edit to work with more iuw, and submit to https://github.com/LmaosDev/lmaoscripts/tree/pingprober\n") 
+print(f"OS = {os_name}\n") 
 ip = input("Provide an ip address:\t (Format: (xxx/*).(xxx/*).(xxx/*/x-x).(xxx/*/x-x) / localhost(:xxxx)/::xxxx )\n > ") 
-name = input("Name of scan-file: {Skippable with Enter} > ")
+name = input("Name of scan-file: {Skippable with Enter} [Provide a full path to save in a specific directory] > ")
 ip_list = []; reslist = []; sm_24 = True 
 
 # test if ip is parsable/usable
@@ -54,8 +54,8 @@ elif '-' in ip:
 else: ip_list.append(ip) 
 
 c = 0 
-print('IPs:', ip_list); input("\n^C to cancel > ") 
-if os.name == "posix":
+print('IPs:', ip_list); input("\nCancel? ^C > ") 
+if os_name == "posix":
     for x in ip_list:
         try: tempstr = subprocess.check_output(f"ping {x} -c 4", shell=True).decode() 
         except Exception as e: tempstr = f"ping -c 4 {ip_list[c]} failed: {e}" 
@@ -71,13 +71,28 @@ else:
         c += 1 
 
 if re.match('\w+', name) != None: # type: ignore 
-    fpath = path[0].replace('\\\\', '\\') 
-    
-    f = open(f"{name}.txt", "w") 
+    if os_name == "nt": 
+        if re.match(".:.+", name): # type: ignore
+            fpath = name.replace(name.split('\\')[-1], '').removesuffix('\\') 
+            try: f = open(f"{name}.txt", "w"); name = name.split('\\')[-1] 
+            except PermissionError as pe: print(f"Please use a directory the program has permissions to write to. PermissionError: {pe}"); exit 
+            except Exception as e: print(e); exit 
+        else: 
+            fpath = ppath[0].replace('\\\\', '\\') 
+            f = open(f"{fpath}\\{name}.txt", "w") 
+    else: 
+        if "/" in name:
+            fpath = name.replace(name.split('/')[-1], '').removesuffix('/') 
+            try: f = open(f"{name}.txt", "w"); name = name.split('/')[-1] 
+            except PermissionError as pe: print(f"Please use a directory the program has permissions to write to. PermissionError: {pe}"); exit 
+            except Exception as e: print(e); exit 
+        else: 
+            fpath = ppath[0] 
+            f = open(f"{fpath}/{name}.txt", "w") 
 
     for y in range(len(reslist)): 
         f.write(reslist[y]) 
     f.close() 
 
-    input(f'File is available at {fpath}.txt') 
+    input(f'File is available at {fpath} as {name}.txt') 
 else: input('Exit program: > ') 
