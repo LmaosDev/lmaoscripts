@@ -14,8 +14,8 @@ try:
 	target_ip = input("\t\t\t      IP: ") 
 	count = int(input("Packet run count (3 packets per): ")) 
 	srcIp = input("    Source IP (def: 192.168.1.2): ") 
-	threadcount = int(input("\t\t   Thread count: ")) 
-	showp = input("\tShow ping (y/n)(def: y): ") 
+	threadcount = int(input("\t\t    Thread count: ")) 
+	showp = input("\t Show ping (y/n)(def: y): ") 
 except Exception: input("\n type more carefully ffs. "); sex() 
 
 if not srcIp: srcIp = "192.168.1.2" 
@@ -53,7 +53,7 @@ while any(rno):
 f"""
 Target IP:   {target_ip}\t\tCurrent ping: {str(search(r"Reply from [\d.]+: bytes=\d+ time[=<]?\s*(\d+)\s*ms", str(s.check_output(f"ping {target_ip} -n 1", shell=True))).group(1))}ms 
 'Source' IP: {srcIp}\t\tTotal packets: {rcount[0]*3*threadcount} 
-Time: {elt-(elt%(60**2))}h {elt-(elt%60)}min {elt%60}s""") 
+Time: {int((elt-(elt%(60**2)))/(60*60))}h {int((elt-(elt%60))/60)}min {elt%60}s""") 
 	print("\n".join(status_lines)) 
 
 input("\nAll sent~~") 
