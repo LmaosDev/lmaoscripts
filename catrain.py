@@ -68,7 +68,7 @@ while any(rno):
 	if hideThreads == "n": 
 		for i in range(threadcount): status_lines.append(f"{i+1}.\t| {rno[i]}\t\t| {str(rcount[i]*3).zfill(8)}\t| {str(rcount[i]).zfill(8)}") 
 	else: 
-		for i in range(min(int(threadcount/25), 10)): status_lines.append(f"{i+1}.\t| {rno[i]}\t\t| {str(rcount[i]*3).zfill(8)}\t| {str(rcount[i]).zfill(8)}") 
+		for i in range(max(5, min(int(threadcount/25), 10))): status_lines.append(f"{i+1}.\t| {rno[i]}\t\t| {str(rcount[i]*3).zfill(8)}\t| {str(rcount[i]).zfill(8)}") 
 	if showp == "y": status_lines.append(
 f"\nTarget IP:   {target_ip}\t\tCurrent ping: {str(search(r"Reply from [\d.]+: bytes=\d+ time[=<]?\s*(\d+)\s*ms", str(s.check_output(f"ping {target_ip} -n 1", shell=True))).group(1))}ms") 
 	else: status_lines.append(f"\nTarget IP:   {target_ip}") 
