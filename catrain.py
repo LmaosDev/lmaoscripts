@@ -19,8 +19,8 @@ def get_args():
 	parser.add_argument("-t", "--threadcount", type=int, help="Thread count") 
 	parser.add_argument("-p", "--showping", type=str, choices=['y', 'n'], help="Show ping (y/n, default: y)") 
 	parser.add_argument("-e", "--hidethreads", type=str, choices=['y', 'n'], help="Hide most threads from showing in UI. Recommended for 40+ threads (y/n, default: n)") 
-	parser.add_argument("-d", "--data", type=str, help="The data to be sent. No more than 1024 chars. Is repeated and cut off to fill up 1024 chars (default: 'HI! :3 ')") 
-	parser.add_argument("-r", "--randomsrc", type=str, choices=['y', 'n'], help="Randomize the source IP. [Per thread] (y/n, default: y)") 
+	parser.add_argument("-d", "--data", type=str, help="The data to be sent. No more than 1456 chars. Is repeated and cut off to fill up 1024 chars (default: 'HI! :3 ')") 
+	parser.add_argument("-r", "--randomsrc", type=str, choices=['y', 'n'], help="Randomize the source IP. (y/n, default: y)") 
 	return parser.parse_args() 
 
 if __name__ == "__main__": 
