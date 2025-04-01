@@ -12,5 +12,5 @@ check branches for scripts, theyre named lol
 * -t --threadcount    Thread count  
 * -p --showping       Show ping (y/n, default: y)  
 * -e --hidethreads    Hide most threads from showing in UI. Recommended for 40+ threads (y/n, default: n)  
-* -d --data           The data to be sent. No more than 1456 chars. Is repeated and cut off to fill up 1024 chars (default: 'HI! :3 ')
+* -d --data           The data to be sent. No more than 1456 chars. Is repeated and cut off to fill up 1456 chars (default: 'HI! :3 ')
 * -r --randomsrc      Randomize the source IP. (y/n, default: y)  
