@@ -14,3 +14,8 @@ check branches for scripts, theyre named lol
 * -e --hidethreads    Hide most threads from showing in UI. Recommended for 40+ threads (y/n, default: n)  
 * -d --data           The data to be sent. No more than 1456 chars. Is repeated and cut off to fill up 1456 chars (default: 'HI! :3 ')
 * -r --randomsrc      Randomize the source IP. (y/n, default: y)  
+
+catrainBSOD.bat is a batch script designed to cause a BSOD on windows by calling a stupid amount of processes of catrain and itself recursively :3c  
+
+It does not have options, youll have to edit it directly 
+
