@@ -58,8 +58,8 @@ try:
 	debugMode = args.debug; verbose = args.verbose
 	exitation = args.exit
 
-	packet_delay = int(args.delay.split(':')[0]) if args.delay and ':' in args.delay else packet_delay = int(args.delay) if args.delay else 0
-	run_delay    = int(args.delay.split(':')[1]) if args.delay and ':' in args.delay else run_delay = 0
+	packet_delay = int(args.delay.split(':')[0]) if args.delay and ':' in args.delay else int(args.delay) if args.delay else 0
+	run_delay    = int(args.delay.split(':')[1]) if args.delay and ':' in args.delay else 0
 
 	if macMode == "y" and not rmatch(r"^([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$", target_ip) and randIp != 'y': raise ValueError("Invalid MAC address") # these check for valid targets
 	if macMode == "n" and not rmatch(r"^(?:25[0-5]|2[0-4]\d|1?\d{1,2})(?:\.(?:25[0-5]|2[0-4]\d|1?\d{1,2})){3}$", target_ip) and randIp != 'y': raise ValueError("Invalid IPV4 address")
